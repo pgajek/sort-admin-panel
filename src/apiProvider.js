@@ -6,52 +6,72 @@ const httpClient = fetchUtils.fetchJson;
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  getList: (resource, params) => {
+  getList: async (resource, params) => {
     const query = ""; // TO DO Later
     const url = `${apiUrl}/${resource}?${query}`;
+    try {
+      const { json } = await httpClient(url);
 
-    return httpClient(url)
-      .then(({ headers, json }) => {
-        const items = json[resource].map((item) => {
-          item.id = item._id;
-          return item;
-        });
-        return {
-          data: items,
-          total: json.total && json.total,
-        };
-      })
-      .catch((err) => {
-        console.log("getList error");
-        return Promise.reject(err);
+      const items = json[resource].map((item) => {
+        item.id = item._id;
+        return item;
       });
+
+      return {
+        data: items,
+        total: json.total && json.total,
+      };
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
   },
-  getOne: (resource, params) => {
-    httpClient(`${apiUrl}/${resource}/${params.id}`)
-      .then(({ json }) => {
-        json.id = params.id;
-        return {
-          data: json,
-        };
-      })
-      .catch((err) => {
-        console.log("getOne error");
-        return Promise.reject(err);
-      });
+
+  getOne: async (resource, params) => {
+    try {
+      const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`);
+      json.id = params.id;
+      console.log(json);
+      return {
+        data: json,
+      };
+    } catch (err) {
+      console.log(err);
+      return Promise.reject(err);
+    }
   },
-  update: (resource, params) => {
-    const product = params.data;
-    product._id = product.id;
-    // product.id.delete();
-    httpClient(`${apiUrl}/${resource}/${params.id}`, {
-      method: "PUT",
-      body: JSON.stringify(product),
-    })
-      .then(({ json }) => ({ data: json }))
-      .catch((err) => {
-        console.log("update error");
-        return Promise.reject(err);
+  // getOne: (resource, params) => {
+  //   httpClient(`${apiUrl}/${resource}/${params.id}`)
+  //     .then(({ json }) => {
+  //       json.id = params.id;
+  //       console.log(json);
+  //       return {
+  //         data: json,
+  //       };
+  //     })
+  //     .catch((err) => {
+  //       console.log("getOne error");
+  //       return Promise.reject(err);
+  //     });
+  // },
+  update: async (resource, params) => {
+    try {
+      const product = params.data;
+      product._id = product.id;
+
+      const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        method: "PUT",
+        body: JSON.stringify(product),
       });
+      json.data.id = json.data._id;
+      console.log(json);
+      return {
+        data: json,
+      };
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   },
   getMany: (resource, params) => {
     return Promise.rejest();

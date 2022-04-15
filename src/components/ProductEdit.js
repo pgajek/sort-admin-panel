@@ -4,6 +4,7 @@ import {
   SimpleForm,
   Edit,
   NumberInput,
+  FileField,
 } from "react-admin";
 
 export const ProductEdit = (props) => (
@@ -21,7 +22,9 @@ export const ProductEdit = (props) => (
       <TextInput source="categories.subCategories" />
       <TextInput source="description" />
       <NumberInput source="countInStock" />
-      <FileInput source="images" />
+      <FileInput source="productImage" accept="image/*">
+        <FileField source="productImage" title="Upload images" />
+      </FileInput>
     </SimpleForm>
   </Edit>
 );

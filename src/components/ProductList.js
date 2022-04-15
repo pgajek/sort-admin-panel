@@ -6,6 +6,7 @@ import {
   List,
   EditButton,
   DeleteButton,
+  ArrayField,
 } from "react-admin";
 
 export const ProductList = (props) => (
@@ -14,11 +15,16 @@ export const ProductList = (props) => (
       <TextField source="id" disabled />
       <TextField source="name" />
       <TextField source="brand" />
-      <TextField source="images" />
+      <TextField source="images.length" label="Photos" />
       <TextField source="unit" />
       <NumberField source="price.priceGross" label="Price" />
       <TextField source="substitutes" />
       <TextField source="categories.subCategories" label="Categories" />
+      {/* <ArrayField source="categories.subCategories">
+        <Datagrid>
+          <TextField source="" />
+        </Datagrid>
+      </ArrayField> */}
       <DateField source="description" />
       <NumberField source="countInStock" />
       <EditButton basePath="/products" />
