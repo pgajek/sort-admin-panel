@@ -22,7 +22,7 @@ export const ProductEdit = (props) => (
       <TextInput source="categories.subCategories" />
       <TextInput source="description" />
       <NumberInput source="countInStock" />
-      <FileInput source="productImage" accept="image/*">
+      <FileInput source="productImage" accept="image/*" multiple="true">
         <FileField source="productImage" title="Upload images" />
       </FileInput>
     </SimpleForm>
